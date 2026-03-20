@@ -367,6 +367,12 @@
                         fontSize: '12px',
                         fontFamily: 'Public Sans, sans-serif'
                     },
+                    positioner: function(labelWidth, labelHeight, point) {
+                        return {
+                            x: point.plotX - 40 + this.chart.plotLeft - labelWidth / 2,
+                            y: point.plotY + this.chart.plotTop - labelHeight - 10
+                        };
+                    },
                     formatter: function() {
                         return '<b>' + this.x + '</b><br/>' +
                                this.series.name + ': <b>' + this.y.toFixed(2) + '</b>';
