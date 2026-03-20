@@ -294,37 +294,40 @@
                     symbolWidth: 24,
                     symbolRadius: 0,
                     padding: 0,
-                    margin: 8
+                    margin: 8,
+                    lineHeight: 16,
+                    symbolPadding: 8
                 },
                 plotOptions: {
                     column: {
                         borderWidth: 0,
                         borderRadius: 4,
-                        grouping: false,
+                        pointPadding: 0.2,
+                        groupPadding: 0.15,
                         animation: {
                             duration: 700,
                             easing: 'easeOutBounce'
                         }
+                    },
+                    series: {
+                        showInLegend: true
                     }
                 },
                 series: [
                     {
                         name: 'USGC ULSD Differential',
-                        data: [null, randomValue(), null, null, null, null],
-                        color: colors[0],
-                        pointWidth: 40
+                        data: [null, null, randomValue(), null, null, null],
+                        color: colors[0]
                     },
                     {
                         name: 'USGC ULSD Differential',
                         data: [null, null, null, randomValue(), null, null],
-                        color: colors[1],
-                        pointWidth: 40
+                        color: colors[1]
                     },
                     {
                         name: 'USGC ULSD Differential',
                         data: [null, null, null, null, randomValue(), null],
-                        color: colors[2],
-                        pointWidth: 40
+                        color: colors[2]
                     }
                 ],
                 tooltip: {
@@ -358,7 +361,7 @@
         function updateChartData() {
             if (!chart) return;
 
-            chart.series[0].setData([null, randomValue(), null, null, null, null], false);
+            chart.series[0].setData([null, null, randomValue(), null, null, null], false);
             chart.series[1].setData([null, null, null, randomValue(), null, null], false);
             chart.series[2].setData([null, null, null, null, randomValue(), null], false);
 
