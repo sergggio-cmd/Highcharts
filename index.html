@@ -172,9 +172,13 @@
             transform: translateY(-5px);
         }
 
-        /* Move bar paths to the left */
+        /* Move bar paths to the left (only for normal view) */
         .highcharts-point {
             transform: translateX(-40px);
+        }
+
+        .compact-view .highcharts-point {
+            transform: translateX(0);
         }
 
         /* Ensure tooltip appears above all chart elements */
@@ -275,8 +279,10 @@
 
     <script>
         let chart;
-        const categories = ['May 1', 'Jun 1', 'Jul 1', 'Aug 1', 'Sep 1', 'Oct 1'];
+        const categoriesFull = ['May 1', 'Jun 1', 'Jul 1', 'Aug 1', 'Sep 1', 'Oct 1'];
+        const categoriesCompact = ['Bar 1', 'Bar 2', 'Bar 3'];
         const colors = ['#1067f4', '#1493df', '#6f6f81'];
+        let currentView = 'normal';
 
         function randomValue(min = -3, max = 10) {
             return parseFloat((Math.random() * (max - min) + min).toFixed(2));
@@ -310,7 +316,7 @@
                     enabled: false
                 },
                 xAxis: {
-                    categories: categories,
+                    categories: categoriesFull,
                     labels: {
                         style: {
                             color: '#1a222b',
@@ -318,12 +324,16 @@
                             fontWeight: '500',
                             fontFamily: 'Inter, sans-serif'
                         },
-                        align: 'center'
+                        align: 'center',
+                        formatter: function() {
+                            return currentView === 'normal' ? this.value : '';
+                        }
                     },
                     lineColor: '#dadee1',
                     tickLength: 0,
                     gridLineWidth: 0,
-                    offset: 0
+                    offset: 0,
+                    visible: true
                 },
                 yAxis: {
                     title: {
@@ -434,8 +444,9 @@
                     },
                     shape: 'square',
                     positioner: function(labelWidth, labelHeight, point) {
+                        const offsetX = currentView === 'compact' ? 0 : -40;
                         return {
-                            x: point.plotX - 40 + this.chart.plotLeft - labelWidth / 2,
+                            x: point.plotX + offsetX + this.chart.plotLeft - labelWidth / 2,
                             y: point.plotY + this.chart.plotTop - labelHeight - 10
                         };
                     },
@@ -452,9 +463,15 @@
         function updateChartData() {
             if (!chart) return;
 
-            chart.series[0].setData([null, null, randomValue(), null, null, null], false);
-            chart.series[1].setData([null, null, null, randomValue(), null, null], false);
-            chart.series[2].setData([null, null, null, null, randomValue(), null], false);
+            if (currentView === 'compact') {
+                chart.series[0].setData([randomValue(), null, null], false);
+                chart.series[1].setData([null, randomValue(), null], false);
+                chart.series[2].setData([null, null, randomValue()], false);
+            } else {
+                chart.series[0].setData([null, null, randomValue(), null, null, null], false);
+                chart.series[1].setData([null, null, null, randomValue(), null, null], false);
+                chart.series[2].setData([null, null, null, null, randomValue(), null], false);
+            }
 
             chart.redraw({
                 duration: 300,
@@ -490,44 +507,58 @@
             const container = document.querySelector('.module-container');
 
             if (size === 'compact') {
+                currentView = 'compact';
                 container.style.maxWidth = '326px';
+                container.classList.add('compact-view');
 
-                // Adjust bar spacing for compact view
+                // Switch to compact mode with 3 categories
                 if (chart) {
-                    chart.series.forEach(function(series) {
-                        series.update({
-                            pointWidth: 40
-                        }, false);
-                    });
+                    // Update to 3 categories
+                    chart.xAxis[0].setCategories(categoriesCompact);
+
+                    // Update series data to use only 3 positions
+                    chart.series[0].setData([randomValue(), null, null], false);
+                    chart.series[1].setData([null, randomValue(), null], false);
+                    chart.series[2].setData([null, null, randomValue()], false);
 
                     chart.update({
                         plotOptions: {
                             column: {
-                                pointPadding: 0.05,
-                                groupPadding: 0.05
+                                pointPadding: 0.15,
+                                groupPadding: 0.2,
+                                pointWidth: 40
                             }
                         }
                     }, false);
+
+                    chart.redraw();
                 }
             } else {
+                currentView = 'normal';
                 container.style.maxWidth = '662px';
+                container.classList.remove('compact-view');
 
-                // Restore normal spacing
+                // Restore normal mode with 6 categories
                 if (chart) {
-                    chart.series.forEach(function(series) {
-                        series.update({
-                            pointWidth: 40
-                        }, false);
-                    });
+                    // Update to 6 categories
+                    chart.xAxis[0].setCategories(categoriesFull);
+
+                    // Update series data back to 6 positions
+                    chart.series[0].setData([null, null, randomValue(), null, null, null], false);
+                    chart.series[1].setData([null, null, null, randomValue(), null, null], false);
+                    chart.series[2].setData([null, null, null, null, randomValue(), null], false);
 
                     chart.update({
                         plotOptions: {
                             column: {
                                 pointPadding: 0,
-                                groupPadding: 0.1
+                                groupPadding: 0.1,
+                                pointWidth: 40
                             }
                         }
                     }, false);
+
+                    chart.redraw();
                 }
             }
 
