@@ -491,8 +491,44 @@
 
             if (size === 'compact') {
                 container.style.maxWidth = '326px';
+
+                // Adjust bar spacing for compact view
+                if (chart) {
+                    chart.series.forEach(function(series) {
+                        series.update({
+                            pointWidth: 40
+                        }, false);
+                    });
+
+                    chart.update({
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.05,
+                                groupPadding: 0.05
+                            }
+                        }
+                    }, false);
+                }
             } else {
                 container.style.maxWidth = '662px';
+
+                // Restore normal spacing
+                if (chart) {
+                    chart.series.forEach(function(series) {
+                        series.update({
+                            pointWidth: 40
+                        }, false);
+                    });
+
+                    chart.update({
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0,
+                                groupPadding: 0.1
+                            }
+                        }
+                    }, false);
+                }
             }
 
             // Close menu
