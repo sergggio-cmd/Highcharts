@@ -173,6 +173,11 @@
         .highcharts-point {
             transform: translateX(-40px);
         }
+
+        /* Ensure tooltip appears above all chart elements */
+        .highcharts-tooltip {
+            z-index: 9999 !important;
+        }
     </style>
 </head>
 <body>
@@ -355,6 +360,8 @@
                     borderColor: '#dadee1',
                     borderRadius: 8,
                     borderWidth: 1,
+                    useHTML: false,
+                    outside: false,
                     shadow: {
                         color: 'rgba(0, 0, 0, 0.12)',
                         offsetX: 0,
@@ -365,7 +372,8 @@
                     style: {
                         color: '#1a222b',
                         fontSize: '12px',
-                        fontFamily: 'Public Sans, sans-serif'
+                        fontFamily: 'Public Sans, sans-serif',
+                        zIndex: 9999
                     },
                     shape: 'square',
                     positioner: function(labelWidth, labelHeight, point) {
