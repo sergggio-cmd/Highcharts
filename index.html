@@ -164,6 +164,11 @@
             0%, 100% { opacity: 0; }
             10%, 90% { opacity: 1; }
         }
+
+        /* Center legend symbols vertically with text */
+        .highcharts-legend-item rect {
+            transform: translateY(6px);
+        }
     </style>
 </head>
 <body onclick="updateChartData()">
