@@ -235,8 +235,8 @@
                     backgroundColor: 'transparent',
                     spacing: [10, 20, 10, 20],
                     animation: {
-                        duration: 700,
-                        easing: 'easeOutQuart'
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
                     }
                 },
                 title: {
@@ -320,8 +320,8 @@
                         groupPadding: 0.1,
                         pointWidth: 40,
                         animation: {
-                            duration: 700,
-                            easing: 'easeOutBounce'
+                            duration: 1000,
+                            easing: 'easeInOutCubic'
                         }
                     },
                     series: {
@@ -385,8 +385,8 @@
             chart.series[2].setData([null, null, null, null, randomValue(), null], false);
 
             chart.redraw({
-                duration: 700,
-                easing: 'easeOutQuart'
+                duration: 1000,
+                easing: 'easeInOutCubic'
             });
 
             updateTimestamp();
