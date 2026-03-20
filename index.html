@@ -458,6 +458,13 @@
                         zIndex: 10000
                     },
                     shape: 'square',
+                    positioner: function(labelWidth, labelHeight, point) {
+                        const offsetX = currentView === 'compact' ? 0 : -40;
+                        return {
+                            x: point.plotX + offsetX + this.chart.plotLeft - labelWidth / 2,
+                            y: point.plotY + this.chart.plotTop - labelHeight - 10
+                        };
+                    },
                     formatter: function() {
                         return '<b>' + this.x + '</b><br/>' +
                                this.series.name + ': <b>' + this.y.toFixed(2) + '</b>';
