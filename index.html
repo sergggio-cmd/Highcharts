@@ -48,7 +48,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            cursor: pointer;
         }
 
         .module-container {
@@ -176,7 +175,7 @@
         }
     </style>
 </head>
-<body onclick="updateChartData()">
+<body>
     <div class="module-container">
         <div class="module-header">
             <div class="header-text">
@@ -184,7 +183,7 @@
                 <div class="header-subtitle">OPIS Carbon Offset NGL/LPG Index</div>
             </div>
             <div class="header-actions">
-                <button class="icon-button" aria-label="Refresh" onclick="event.stopPropagation(); updateChartData();">
+                <button class="icon-button" aria-label="Refresh" onclick="updateChartData();">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C9.84827 2 11.4984 2.87868 12.5355 4.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         <path d="M13 2V5H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -210,7 +209,7 @@
         </div>
     </div>
 
-    <div class="click-hint" id="hint">Click anywhere to refresh data</div>
+    <div class="click-hint" id="hint">Click refresh button to update data</div>
 
     <script>
         let chart;
