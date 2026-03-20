@@ -258,8 +258,8 @@
                         </svg>
                     </button>
                     <div class="menu-dropdown" id="menu-dropdown">
-                        <button class="menu-item" onclick="setCardSize('normal')">Vista normal (662px)</button>
-                        <button class="menu-item" onclick="setCardSize('compact')">Vista reducida (326px)</button>
+                        <button class="menu-item" onclick="setCardSize('normal')">Normal view (662px)</button>
+                        <button class="menu-item" onclick="setCardSize('compact')">Compact view (326px)</button>
                     </div>
                 </div>
             </div>
@@ -275,7 +275,7 @@
         </div>
     </div>
 
-    <div class="click-hint" id="hint">Click refresh button to update data</div>
+    <div class="click-hint" id="hint">Click refresh to update data</div>
 
     <script>
         let chart;
@@ -512,7 +512,11 @@
                     // Update to 3 categories
                     chart.xAxis[0].setCategories(categoriesCompact);
 
-                    // Update series data to use only 3 positions
+                    // Update series data and width to use only 3 positions with 20px bars
+                    chart.series[0].update({ pointWidth: 20 }, false);
+                    chart.series[1].update({ pointWidth: 20 }, false);
+                    chart.series[2].update({ pointWidth: 20 }, false);
+
                     chart.series[0].setData([randomValue(), null, null], false);
                     chart.series[1].setData([null, randomValue(), null], false);
                     chart.series[2].setData([null, null, randomValue()], false);
@@ -521,8 +525,7 @@
                         plotOptions: {
                             column: {
                                 pointPadding: 0.15,
-                                groupPadding: 0.2,
-                                pointWidth: 20
+                                groupPadding: 0.2
                             }
                         }
                     }, false);
@@ -539,6 +542,11 @@
                     // Update to 6 categories
                     chart.xAxis[0].setCategories(categoriesFull);
 
+                    // Update series width back to 40px
+                    chart.series[0].update({ pointWidth: 40 }, false);
+                    chart.series[1].update({ pointWidth: 40 }, false);
+                    chart.series[2].update({ pointWidth: 40 }, false);
+
                     // Update series data back to 6 positions
                     chart.series[0].setData([null, null, randomValue(), null, null, null], false);
                     chart.series[1].setData([null, null, null, randomValue(), null, null], false);
@@ -548,8 +556,7 @@
                         plotOptions: {
                             column: {
                                 pointPadding: 0,
-                                groupPadding: 0.1,
-                                pointWidth: 40
+                                groupPadding: 0.1
                             }
                         }
                     }, false);
