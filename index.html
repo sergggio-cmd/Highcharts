@@ -8,43 +8,30 @@
     <style>
         /* DJ Platform Library Design Tokens */
         :root {
-            /* Colors */
             --content-base: #1a222b;
             --content-subtle: #778694;
             --content-contrast: #0b1118;
             --surface-foreground: #ffffff;
             --surface-border-neutral-low: #dadee1;
             --surface-background: #f6f7f8;
-
-            /* Chart Colors */
             --chart-blue-primary: #1067f4;
             --chart-blue-secondary: #1493df;
             --chart-gray: #6f6f81;
-
-            /* Spacing */
             --space-4: 4px;
-            --space-6: 6px;
             --space-8: 8px;
             --space-12: 12px;
             --space-16: 16px;
             --space-24: 24px;
-
-            /* Radius */
             --radius-xsmall: 4px;
             --radius-small: 8px;
             --radius-med: 12px;
             --radius-full: 999px;
-
-            /* Typography */
             --font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --font-size-small: 12px;
             --font-weight-medium: 500;
             --font-weight-semibold: 600;
             --line-height-small: 16px;
-
-            /* Shadows */
             --shadow-low: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-med: 0 4px 8px rgba(0, 0, 0, 0.12);
         }
 
         * {
@@ -181,7 +168,6 @@
 </head>
 <body onclick="updateChartData()">
     <div class="module-container">
-        <!-- Header -->
         <div class="module-header">
             <div class="header-text">
                 <div class="header-title">FOB Arab Gulf ($/mt)</div>
@@ -204,62 +190,42 @@
             </div>
         </div>
 
-        <!-- Chart -->
         <div class="chart-container">
             <div id="chart"></div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <div class="footer-source">Source: OPIS</div>
-            <div class="footer-date" id="last-updated">Last updated: <span id="update-time"></span></div>
+            <div class="footer-date">Last updated: <span id="update-time"></span></div>
         </div>
     </div>
 
     <div class="click-hint" id="hint">Click anywhere to refresh data</div>
 
     <script>
-        // DJ Platform Library Chart Configuration
         let chart;
         const categories = ['May 1', 'Jun 1', 'Jul 1', 'Aug 1', 'Sep 1', 'Oct 1'];
-        const seriesNames = [
-            'USGC ULSD Differential',
-            'LA ULSD Differential',
-            'NY Harbor ULSD Differential'
-        ];
-        const seriesColors = [
-            '#1067f4', // DJ Platform Blue Primary
-            '#1493df', // DJ Platform Blue Secondary
-            '#6f6f81'  // DJ Platform Gray
-        ];
+        const colors = ['#1067f4', '#1493df', '#6f6f81'];
 
-        // Generate random data between min and max
-        function generateRandomData(points = 6, min = -3, max = 10) {
-            return Array.from({ length: points }, () =>
-                parseFloat((Math.random() * (max - min) + min).toFixed(2))
-            );
+        function randomValue(min = -3, max = 10) {
+            return parseFloat((Math.random() * (max - min) + min).toFixed(2));
         }
 
-        // Update timestamp
         function updateTimestamp() {
             const now = new Date();
             const formatted = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             document.getElementById('update-time').textContent = formatted;
         }
 
-        // Initialize chart
         function initChart() {
             chart = Highcharts.chart('chart', {
                 chart: {
                     type: 'column',
-                    height: 300,
-                    style: {
-                        fontFamily: 'Public Sans, sans-serif'
-                    },
+                    height: 320,
                     backgroundColor: 'transparent',
-                    spacing: [16, 16, 16, 16],
+                    spacing: [10, 10, 10, 10],
                     animation: {
-                        duration: 800,
+                        duration: 700,
                         easing: 'easeOutQuart'
                     }
                 },
@@ -278,11 +244,13 @@
                         style: {
                             color: '#1a222b',
                             fontSize: '12px',
-                            fontWeight: '500'
+                            fontWeight: '500',
+                            fontFamily: 'Public Sans, sans-serif'
                         }
                     },
                     lineColor: '#dadee1',
-                    tickLength: 0
+                    tickLength: 0,
+                    gridLineWidth: 0
                 },
                 yAxis: {
                     title: {
@@ -290,17 +258,19 @@
                         style: {
                             color: '#778694',
                             fontSize: '12px',
-                            fontWeight: '500'
+                            fontWeight: '500',
+                            fontFamily: 'Public Sans, sans-serif'
                         },
                         rotation: 270,
-                        offset: 15
+                        margin: 20
                     },
                     labels: {
                         format: '{value:.2f}',
                         style: {
                             color: '#1a222b',
                             fontSize: '12px',
-                            fontWeight: '500'
+                            fontWeight: '500',
+                            fontFamily: 'Public Sans, sans-serif'
                         }
                     },
                     gridLineColor: '#e8e8e8',
@@ -310,46 +280,59 @@
                     tickInterval: 5
                 },
                 legend: {
-                    align: 'left',
+                    align: 'center',
                     verticalAlign: 'bottom',
                     layout: 'horizontal',
                     itemStyle: {
                         color: '#778694',
                         fontSize: '12px',
-                        fontWeight: '500'
+                        fontWeight: '500',
+                        fontFamily: 'Public Sans, sans-serif'
                     },
-                    itemMarginBottom: 8,
+                    itemMarginRight: 10,
                     symbolHeight: 2,
                     symbolWidth: 24,
-                    symbolRadius: 0
+                    symbolRadius: 0,
+                    padding: 0,
+                    margin: 8
                 },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.2,
                         borderWidth: 0,
                         borderRadius: 4,
-                        groupPadding: 0.15,
+                        grouping: false,
                         animation: {
-                            duration: 800,
+                            duration: 700,
                             easing: 'easeOutBounce'
-                        }
-                    },
-                    series: {
-                        animation: {
-                            duration: 800
                         }
                     }
                 },
-                series: seriesNames.map((name, index) => ({
-                    name: name,
-                    data: generateRandomData(),
-                    color: seriesColors[index]
-                })),
+                series: [
+                    {
+                        name: 'USGC ULSD Differential',
+                        data: [null, randomValue(), null, null, null, null],
+                        color: colors[0],
+                        pointWidth: 40
+                    },
+                    {
+                        name: 'USGC ULSD Differential',
+                        data: [null, null, null, randomValue(), null, null],
+                        color: colors[1],
+                        pointWidth: 40
+                    },
+                    {
+                        name: 'USGC ULSD Differential',
+                        data: [null, null, null, null, randomValue(), null],
+                        color: colors[2],
+                        pointWidth: 40
+                    }
+                ],
                 tooltip: {
                     shared: false,
                     backgroundColor: 'white',
                     borderColor: '#dadee1',
                     borderRadius: 8,
+                    borderWidth: 1,
                     shadow: {
                         color: 'rgba(0, 0, 0, 0.12)',
                         offsetX: 0,
@@ -359,7 +342,8 @@
                     },
                     style: {
                         color: '#1a222b',
-                        fontSize: '12px'
+                        fontSize: '12px',
+                        fontFamily: 'Public Sans, sans-serif'
                     },
                     formatter: function() {
                         return '<b>' + this.x + '</b><br/>' +
@@ -371,28 +355,26 @@
             updateTimestamp();
         }
 
-        // Update chart with new random data
         function updateChartData() {
             if (!chart) return;
 
-            chart.series.forEach((series, index) => {
-                const newData = generateRandomData();
-                series.setData(newData, true, {
-                    duration: 800,
-                    easing: 'easeOutQuart'
-                });
+            chart.series[0].setData([null, randomValue(), null, null, null, null], false);
+            chart.series[1].setData([null, null, null, randomValue(), null, null], false);
+            chart.series[2].setData([null, null, null, null, randomValue(), null], false);
+
+            chart.redraw({
+                duration: 700,
+                easing: 'easeOutQuart'
             });
 
             updateTimestamp();
         }
 
-        // Hide hint after 3 seconds
         setTimeout(() => {
             const hint = document.getElementById('hint');
             if (hint) hint.style.display = 'none';
         }, 3000);
 
-        // Initialize on page load
         initChart();
     </script>
 </body>
