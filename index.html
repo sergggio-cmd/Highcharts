@@ -129,9 +129,14 @@
             background-color: var(--surface-foreground);
             border: 1px solid var(--surface-border-neutral-low);
             border-radius: var(--radius-med);
-            padding: 0;
+            padding: var(--space-16);
             margin-bottom: var(--space-8);
             overflow: visible;
+            transition: padding 0.3s ease;
+        }
+
+        .compact-view .chart-container {
+            padding: var(--space-8);
         }
 
         .footer {
