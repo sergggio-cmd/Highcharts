@@ -324,16 +324,12 @@
                             fontWeight: '500',
                             fontFamily: 'Inter, sans-serif'
                         },
-                        align: 'center',
-                        formatter: function() {
-                            return currentView === 'normal' ? this.value : '';
-                        }
+                        align: 'center'
                     },
                     lineColor: '#dadee1',
                     tickLength: 0,
                     gridLineWidth: 0,
-                    offset: 0,
-                    visible: true
+                    offset: 0
                 },
                 yAxis: {
                     title: {
@@ -526,7 +522,7 @@
                             column: {
                                 pointPadding: 0.15,
                                 groupPadding: 0.2,
-                                pointWidth: 40
+                                pointWidth: 20
                             }
                         }
                     }, false);
