@@ -60,7 +60,7 @@
             max-width: 662px;
             width: 100%;
             box-shadow: var(--shadow-low);
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .module-container:active {
@@ -181,6 +181,54 @@
         .highcharts-tooltip {
             z-index: 9999 !important;
         }
+
+        /* Dropdown menu */
+        .menu-dropdown {
+            position: absolute;
+            top: 32px;
+            right: 0;
+            background-color: var(--surface-foreground);
+            border: 1px solid var(--surface-border-neutral-low);
+            border-radius: var(--radius-small);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+        }
+
+        .menu-item {
+            padding: var(--space-8);
+            font-size: var(--font-size-small);
+            font-weight: var(--font-weight-semibold);
+            color: var(--content-base);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-family);
+        }
+
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .menu-item:first-child {
+            border-radius: var(--radius-small) var(--radius-small) 0 0;
+        }
+
+        .menu-item:last-child {
+            border-radius: 0 0 var(--radius-small) var(--radius-small);
+        }
+
+        .menu-button-wrapper {
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -197,13 +245,19 @@
                         <path d="M13 2V5H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
-                <button class="icon-button" aria-label="Menu">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <circle cx="8" cy="3" r="1.5" fill="currentColor"/>
-                        <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
-                        <circle cx="8" cy="13" r="1.5" fill="currentColor"/>
-                    </svg>
-                </button>
+                <div class="menu-button-wrapper">
+                    <button class="icon-button" aria-label="Menu" onclick="toggleMenu();">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="3" r="1.5" fill="currentColor"/>
+                            <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+                            <circle cx="8" cy="13" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <div class="menu-dropdown" id="menu-dropdown">
+                        <button class="menu-item" onclick="setCardSize('normal')">Vista normal (662px)</button>
+                        <button class="menu-item" onclick="setCardSize('compact')">Vista reducida (326px)</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -414,6 +468,43 @@
             const hint = document.getElementById('hint');
             if (hint) hint.style.display = 'none';
         }, 3000);
+
+        // Menu functionality
+        function toggleMenu() {
+            const menu = document.getElementById('menu-dropdown');
+            menu.classList.toggle('show');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menu-dropdown');
+            const menuButton = event.target.closest('.menu-button-wrapper');
+
+            if (!menuButton && menu.classList.contains('show')) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Change card size
+        function setCardSize(size) {
+            const container = document.querySelector('.module-container');
+
+            if (size === 'compact') {
+                container.style.maxWidth = '326px';
+            } else {
+                container.style.maxWidth = '662px';
+            }
+
+            // Close menu
+            document.getElementById('menu-dropdown').classList.remove('show');
+
+            // Redraw chart to adjust to new container size
+            if (chart) {
+                setTimeout(() => {
+                    chart.reflow();
+                }, 100);
+            }
+        }
 
         initChart();
     </script>
