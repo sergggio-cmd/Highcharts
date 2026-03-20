@@ -61,7 +61,7 @@
             max-width: 662px;
             width: 100%;
             box-shadow: var(--shadow-low);
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             z-index: 1;
             overflow: visible;
@@ -132,7 +132,7 @@
             padding: var(--space-16);
             margin-bottom: var(--space-8);
             overflow: visible;
-            transition: padding 0.3s ease;
+            transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .compact-view .chart-container {
@@ -519,61 +519,96 @@
                 container.style.maxWidth = '326px';
                 container.classList.add('compact-view');
 
-                // Switch to compact mode with 3 categories
+                // Switch to compact mode with 3 categories - with animation
                 if (chart) {
-                    // Update to 3 categories
-                    chart.xAxis[0].setCategories(categoriesCompact);
-
-                    // Update series data and width to use only 3 positions with 20px bars
-                    chart.series[0].update({ pointWidth: 20 }, false);
-                    chart.series[1].update({ pointWidth: 20 }, false);
-                    chart.series[2].update({ pointWidth: 20 }, false);
-
-                    chart.series[0].setData([randomValue(), null, null], false);
-                    chart.series[1].setData([null, randomValue(), null], false);
-                    chart.series[2].setData([null, null, randomValue()], false);
-
-                    chart.update({
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.15,
-                                groupPadding: 0.2
+                    // Fade out current bars
+                    chart.series.forEach(function(series) {
+                        series.update({
+                            animation: {
+                                duration: 400,
+                                easing: 'easeInOutCubic'
                             }
-                        }
-                    }, false);
+                        }, false);
+                    });
 
-                    chart.redraw();
+                    // After fade, update structure
+                    setTimeout(() => {
+                        chart.xAxis[0].setCategories(categoriesCompact, false);
+
+                        chart.series[0].update({ pointWidth: 20 }, false);
+                        chart.series[1].update({ pointWidth: 20 }, false);
+                        chart.series[2].update({ pointWidth: 20 }, false);
+
+                        chart.series[0].setData([randomValue(), null, null], false);
+                        chart.series[1].setData([null, randomValue(), null], false);
+                        chart.series[2].setData([null, null, randomValue()], false);
+
+                        chart.update({
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.15,
+                                    groupPadding: 0.2,
+                                    animation: {
+                                        duration: 500,
+                                        easing: 'easeOutQuart'
+                                    }
+                                }
+                            }
+                        }, false);
+
+                        chart.redraw({
+                            duration: 500,
+                            easing: 'easeOutQuart'
+                        });
+                    }, 100);
                 }
             } else {
                 currentView = 'normal';
                 container.style.maxWidth = '662px';
                 container.classList.remove('compact-view');
 
-                // Restore normal mode with 6 categories
+                // Restore normal mode with 6 categories - with animation
                 if (chart) {
-                    // Update to 6 categories
-                    chart.xAxis[0].setCategories(categoriesFull);
-
-                    // Update series width back to 40px
-                    chart.series[0].update({ pointWidth: 40 }, false);
-                    chart.series[1].update({ pointWidth: 40 }, false);
-                    chart.series[2].update({ pointWidth: 40 }, false);
-
-                    // Update series data back to 6 positions
-                    chart.series[0].setData([null, null, randomValue(), null, null, null], false);
-                    chart.series[1].setData([null, null, null, randomValue(), null, null], false);
-                    chart.series[2].setData([null, null, null, null, randomValue(), null], false);
-
-                    chart.update({
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0,
-                                groupPadding: 0.1
+                    // Fade out current bars
+                    chart.series.forEach(function(series) {
+                        series.update({
+                            animation: {
+                                duration: 400,
+                                easing: 'easeInOutCubic'
                             }
-                        }
-                    }, false);
+                        }, false);
+                    });
 
-                    chart.redraw();
+                    // After fade, update structure
+                    setTimeout(() => {
+                        chart.xAxis[0].setCategories(categoriesFull, false);
+
+                        chart.series[0].update({ pointWidth: 40 }, false);
+                        chart.series[1].update({ pointWidth: 40 }, false);
+                        chart.series[2].update({ pointWidth: 40 }, false);
+
+                        chart.series[0].setData([null, null, randomValue(), null, null, null], false);
+                        chart.series[1].setData([null, null, null, randomValue(), null, null], false);
+                        chart.series[2].setData([null, null, null, null, randomValue(), null], false);
+
+                        chart.update({
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0,
+                                    groupPadding: 0.1,
+                                    animation: {
+                                        duration: 500,
+                                        easing: 'easeOutQuart'
+                                    }
+                                }
+                            }
+                        }, false);
+
+                        chart.redraw({
+                            duration: 500,
+                            easing: 'easeOutQuart'
+                        });
+                    }, 100);
                 }
             }
 
@@ -584,7 +619,7 @@
             if (chart) {
                 setTimeout(() => {
                     chart.reflow();
-                }, 100);
+                }, 600);
             }
         }
 
