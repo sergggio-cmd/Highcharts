@@ -139,6 +139,15 @@
             padding: var(--space-8);
         }
 
+        #chart {
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #chart.fading {
+            opacity: 0;
+        }
+
         .footer {
             display: flex;
             justify-content: space-between;
@@ -520,26 +529,23 @@
         // Change card size
         function setCardSize(size) {
             const container = document.querySelector('.module-container');
+            const chartElement = document.getElementById('chart');
 
-            if (size === 'compact') {
-                currentView = 'compact';
-                container.style.maxWidth = '326px';
-                container.classList.add('compact-view');
+            // Close menu first
+            document.getElementById('menu-dropdown').classList.remove('show');
 
-                // Switch to compact mode with 3 categories - with animation
-                if (chart) {
-                    // Fade out current bars
-                    chart.series.forEach(function(series) {
-                        series.update({
-                            animation: {
-                                duration: 400,
-                                easing: 'easeInOutCubic'
-                            }
-                        }, false);
-                    });
+            // Start fade-out
+            chartElement.classList.add('fading');
 
-                    // After fade, update structure
-                    setTimeout(() => {
+            // Wait for fade-out to complete
+            setTimeout(() => {
+                if (size === 'compact') {
+                    currentView = 'compact';
+                    container.style.maxWidth = '326px';
+                    container.classList.add('compact-view');
+
+                    // Switch to compact mode with 3 categories
+                    if (chart) {
                         chart.xAxis[0].setCategories(categoriesCompact, false);
 
                         chart.series[0].update({ pointWidth: 20 }, false);
@@ -556,38 +562,22 @@
                                     pointPadding: 0.15,
                                     groupPadding: 0.2,
                                     animation: {
-                                        duration: 500,
-                                        easing: 'easeOutQuart'
+                                        duration: 0
                                     }
                                 }
                             }
                         }, false);
 
-                        chart.redraw({
-                            duration: 500,
-                            easing: 'easeOutQuart'
-                        });
-                    }, 100);
-                }
-            } else {
-                currentView = 'normal';
-                container.style.maxWidth = '662px';
-                container.classList.remove('compact-view');
+                        chart.redraw(false);
+                        chart.reflow();
+                    }
+                } else {
+                    currentView = 'normal';
+                    container.style.maxWidth = '662px';
+                    container.classList.remove('compact-view');
 
-                // Restore normal mode with 6 categories - with animation
-                if (chart) {
-                    // Fade out current bars
-                    chart.series.forEach(function(series) {
-                        series.update({
-                            animation: {
-                                duration: 400,
-                                easing: 'easeInOutCubic'
-                            }
-                        }, false);
-                    });
-
-                    // After fade, update structure
-                    setTimeout(() => {
+                    // Restore normal mode with 6 categories
+                    if (chart) {
                         chart.xAxis[0].setCategories(categoriesFull, false);
 
                         chart.series[0].update({ pointWidth: 40 }, false);
@@ -604,30 +594,22 @@
                                     pointPadding: 0,
                                     groupPadding: 0.1,
                                     animation: {
-                                        duration: 500,
-                                        easing: 'easeOutQuart'
+                                        duration: 0
                                     }
                                 }
                             }
                         }, false);
 
-                        chart.redraw({
-                            duration: 500,
-                            easing: 'easeOutQuart'
-                        });
-                    }, 100);
+                        chart.redraw(false);
+                        chart.reflow();
+                    }
                 }
-            }
 
-            // Close menu
-            document.getElementById('menu-dropdown').classList.remove('show');
-
-            // Redraw chart to adjust to new container size
-            if (chart) {
+                // Wait for container transition and reflow, then fade-in
                 setTimeout(() => {
-                    chart.reflow();
-                }, 600);
-            }
+                    chartElement.classList.remove('fading');
+                }, 500);
+            }, 300);
         }
 
         initChart();
