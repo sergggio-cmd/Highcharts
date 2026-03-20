@@ -188,9 +188,14 @@
         /* Ensure tooltip appears above all chart elements and module container */
         .highcharts-tooltip {
             z-index: 10000 !important;
+            position: absolute !important;
         }
 
         .highcharts-container {
+            overflow: visible !important;
+        }
+
+        #chart {
             overflow: visible !important;
         }
 
@@ -432,7 +437,7 @@
                     borderRadius: 8,
                     borderWidth: 1,
                     useHTML: false,
-                    outside: false,
+                    outside: true,
                     shadow: {
                         color: 'rgba(0, 0, 0, 0.12)',
                         offsetX: 0,
@@ -444,16 +449,9 @@
                         color: '#1a222b',
                         fontSize: '12px',
                         fontFamily: 'Inter, sans-serif',
-                        zIndex: 9999
+                        zIndex: 10000
                     },
                     shape: 'square',
-                    positioner: function(labelWidth, labelHeight, point) {
-                        const offsetX = currentView === 'compact' ? 0 : -40;
-                        return {
-                            x: point.plotX + offsetX + this.chart.plotLeft - labelWidth / 2,
-                            y: point.plotY + this.chart.plotTop - labelHeight - 10
-                        };
-                    },
                     formatter: function() {
                         return '<b>' + this.x + '</b><br/>' +
                                this.series.name + ': <b>' + this.y.toFixed(2) + '</b>';
