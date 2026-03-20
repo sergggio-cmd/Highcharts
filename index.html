@@ -35,6 +35,7 @@
             --font-weight-semibold: 600;
             --line-height-small: 16px;
             --shadow-low: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --elevation-sm: 0px 2px 6px 0px rgba(0, 0, 0, 0.09);
         }
 
         * {
@@ -207,7 +208,7 @@
             background-color: var(--surface-foreground);
             border: 1px solid var(--surface-border-neutral-low);
             border-radius: var(--radius-small);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+            box-shadow: var(--elevation-sm);
             min-width: 180px;
             z-index: 1000;
             display: none;
@@ -439,11 +440,11 @@
                     useHTML: false,
                     outside: true,
                     shadow: {
-                        color: 'rgba(0, 0, 0, 0.12)',
+                        color: 'rgba(0, 0, 0, 0.09)',
                         offsetX: 0,
-                        offsetY: 4,
+                        offsetY: 2,
                         opacity: 1,
-                        width: 8
+                        width: 6
                     },
                     style: {
                         color: '#1a222b',
